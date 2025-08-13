@@ -1,0 +1,12 @@
+# Ignore secret files
+*.env
+*.secret
+*.key
+*.pem
+*.crt
+*.p12
+*.credentials
+secrets/
+secret/
+config/secret.*
+.env.*
