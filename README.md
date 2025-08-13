@@ -1,5 +1,5 @@
 # r-ztm-f-d
-
+<!-- Setup and Installation are start from ln no : 65 -->
 # Title: Task Manager API
 
 ## Objective:
@@ -60,3 +60,101 @@ Build a RESTful API for a simple task manager application using either Flask or 
 * User authentication and authorization.
 * Quality and coverage of tests.
 * Clarity and completeness of documentation.
+
+
+## 🔧 Setup and Installation -------------------------------------------------
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.8 or higher
+- pip (Python package manager)
+- Git (optional, for cloning the repository)
+
+### Installation
+
+1. **Clone the repository:**
+    ```bash
+    git clone https://github.com/rajbhardwaj1/r-ztm-f-d.git
+    cd r-ztm-f-d
+    ```
+
+2. **Create a virtual environment (recommended):**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    ```
+
+3. **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+### Configuration
+
+- Copy `.env.example` to `.env` and update any necessary environment variables (such as secret keys or database URLs).
+
+### Running the Application
+
+- **Start the development server:**
+  ```bash
+  
+  python manage.py runserver
+  ```
+
+- The API will be available at  `http://localhost:8000/` (Django).
+
+### API Usage
+
+- Use tools like [Postman](https://www.postman.com/) or [curl](https://curl.se/) to interact with the API endpoints.
+- Register a new user and log in to receive an authentication token.
+- Include the token in the `Authorization` header for protected endpoints.
+
+### API Documentation
+
+- Visit `/docs` or `/swagger` in your browser to view the interactive API documentation.
+
+### Running Tests
+
+- To run all unit tests:
+  
+  ```bash
+  python manage.py test task_api
+  ```
+
+### Project Structure
+
+```
+r-ztm-f-d/
+├── app/                # Main application code
+├── tests/              # Unit tests
+├── requirements.txt    # Python dependencies
+├── README.md           # Project documentation
+├── .env.example        # Example environment variables
+```
+
+### Dependencies
+
+- Flask or Django (web framework)
+- Flask-RESTful or Django REST Framework (API)
+- PyJWT or Django authentication (for JWT/session auth)
+- pytest or Django test framework (testing)
+- drf-yasg, flasgger, or similar (API docs)
+
+Install all dependencies using the provided `requirements.txt`.
+
+### Notes
+
+- Make sure to keep your secret keys safe and never commit sensitive information.
+- For production, configure proper database and security settings.
+
+---
+
+## Contact
+
+For questions or issues, please open an issue on the repository or contact me 
+Mail : rajbhardwaj1@gmail.com
+phone : +91 8405919441
+
+---
