@@ -60,3 +60,29 @@ Build a RESTful API for a simple task manager application using either Flask or 
 * User authentication and authorization.
 * Quality and coverage of tests.
 * Clarity and completeness of documentation.
+
+
+
+## How to setup and run the code:
+
+* I’ve created a script named run_project.py that fully automates the Django project setup and launch process.
+With just a single command:
+
+# python run_project.py
+
+* the script will:
+
+Install all required dependencies.
+
+Apply database migrations.
+
+Create a superuser (if one doesn’t already exist).
+
+Start the development server.
+
+In short, it handles everything for you — no manual steps needed.
+
+## To access API Documentation:
+
+*  just go on this url http://127.0.0.1:8000/swagger/ you will be able to access a api documentation 
+ 
