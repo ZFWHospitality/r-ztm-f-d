@@ -60,3 +60,14 @@ Build a RESTful API for a simple task manager application using either Flask or 
 * User authentication and authorization.
 * Quality and coverage of tests.
 * Clarity and completeness of documentation.
+
+## How to run it:
+
+* The project has been made on an anaconda distribution of python.
+* A copy of the environment has been attached in the Repo itself just install it.
+* To create the environment from the file execute "conda env create -f environment.yml" command.
+* Execute the command "conda activate djangoprac" to execute the env.
+* Then go to the project and run it with command "python manage.py createsuperuser". This will help set up a super user which will be needed to access the API.
+* Finally run the server it self with "python manage.py runserver".
+* Go to "http://127.0.0.1:8000/admin/" and login this will start a session and create the required session and cookies to access the API for the current session.
+* Now the project is deployed and can be used for testing. 
