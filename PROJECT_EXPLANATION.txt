@@ -1,0 +1,266 @@
+TASK MANAGER API - PROJECT EXPLANATION
+
+
+WHAT IS THIS PROJECT?
+---------------------
+This is a Task Manager API - a backend system that allows users to create, 
+manage, and organize their tasks. Think of it like a to-do list application 
+that runs on a server and can be accessed by multiple users.
+
+Imagine you have a mobile app or website where people can:
+- Sign up and create an account
+- Log in securely
+- Create tasks (like "Buy groceries", "Finish project")
+- Mark tasks as complete
+- Delete tasks
+- Filter their tasks
+
+This API provides all the backend functionality for such an application.
+
+
+ WHAT DOES IT DO?
+
+
+USER MANAGEMENT:
+---------------
+1. SIGNUP - Users can create a new account with username and password
+2. LOGIN - Users can log in and receive a secure token (JWT)
+3. PROFILE - Users can view their own profile information
+
+TASK MANAGEMENT:
+---------------
+1. CREATE - Users can create new tasks with title and description
+2. READ - Users can view all their tasks or a specific task
+3. UPDATE - Users can modify task details or mark them as complete
+4. DELETE - Users can delete tasks (soft delete - data is preserved)
+5. FILTER - Users can filter tasks by completion status or date
+6. PAGINATION - Tasks are shown in pages (5 tasks per page)
+
+SECURITY FEATURES:
+-----------------
+1. Password Encryption - Passwords are hashed using bcrypt (very secure)
+2. JWT Authentication - Secure tokens for user authentication
+3. User Isolation - Users can only see and modify their own tasks
+4. Authorization - All task operations require valid authentication
+
+
+ HOW IT WORKS?
+
+
+ARCHITECTURE (3 LAYERS):
+------------------------
+
+LAYER 1: PRESENTATION (app.py)
+-----------------------------
+- This is where all the API endpoints are defined
+- Handles incoming HTTP requests
+- Validates JWT tokens
+- Returns JSON responses
+- Think of this as the "reception desk" that receives requests
+
+LAYER 2: SERVICE (service/user_service.py, service/task_service.py)
+--------------------------------------------------------------------
+- Contains all the business logic
+- Handles data validation
+- Performs database operations
+- Think of this as the "workers" that do the actual work
+
+LAYER 3: DATA (models.py, db_config.py)
+----------------------------------------
+- Defines database structure (User and Task models)
+- Handles database connections
+- Stores and retrieves data
+- Think of this as the "storage room" where data is kept
+
+HOW A REQUEST FLOWS:
+-------------------
+1. User sends a request (e.g., "Create a task")
+2. Presentation layer receives it
+3. Checks if user is authenticated (JWT token)
+4. Service layer processes the request
+5. Data layer saves to database
+6. Response is sent back to user
+
+EXAMPLE FLOW:
+------------
+User wants to create a task:
+1. User sends POST request to /tasks/create with JWT token
+2. app.py receives request and validates token
+3. task_service.py creates the task in database
+4. Database saves the task
+5. Response sent back: "Task created successfully"
+
+
+KEY TECHNOLOGIES
+
+
+FLASK - Web framework (handles HTTP requests and responses)
+MYSQL - Database (stores users and tasks)
+SQLALCHEMY - ORM (makes database operations easier)
+JWT - Authentication tokens (secure user sessions)
+BCRYPT - Password hashing (keeps passwords safe)
+PYTEST - Testing framework
+
+
+DATABASE STRUCTURE
+
+
+USERS TABLE:
+-----------
+- id: Unique identifier
+- username: User's login name
+- password_hash: Encrypted password
+- created_at: When account was created
+
+TASKS TABLE:
+-----------
+- id: Unique identifier
+- title: Task name
+- description: Task details
+- completed: Is task done? (true/false)
+- created_at: When task was created
+- updated_at: When task was last modified
+- deleted_at: When task was deleted (soft delete)
+- user_id: Which user owns this task
+
+RELATIONSHIP:
+------------
+One user can have many tasks (one-to-many relationship)
+Each task belongs to one user
+
+
+SECURITY FEATURES
+
+
+1. PASSWORD HASHING:
+-------------------
+- Passwords are NEVER stored in plain text
+- bcrypt creates a unique hash for each password
+- Even if database is compromised, passwords are safe
+- Uses salt (random data) to prevent rainbow table attacks
+
+2. JWT TOKENS:
+-------------
+- When user logs in, they get a JWT token
+- Token contains user ID and expiration time
+- Token is valid for 24 hours
+- Every request includes this token in header
+- Server validates token before processing request
+
+3. USER ISOLATION:
+-----------------
+- Users can only access their own tasks
+- Database queries filter by user_id
+- Prevents users from seeing or modifying others' tasks
+
+4. SOFT DELETE:
+--------------
+- When task is "deleted", it's not removed from database
+- Instead, deleted_at timestamp is set
+- Data is preserved for audit purposes
+- Can be recovered if needed
+
+
+API ENDPOINTS
+
+
+AUTHENTICATION:
+--------------
+POST /signup - Register new user
+POST /login - Login and get JWT token
+POST /profile - Get user profile (requires authentication)
+
+TASKS:
+-----
+POST /tasks - Get all tasks (paginated)
+POST /tasks/<id> - Get specific task
+POST /tasks/create - Create new task
+POST /tasks/update/<id> - Update task
+POST /tasks/delete/<id> - Delete task
+POST /tasks/filter - Filter tasks by status/date
+
+ALL TASK ENDPOINTS REQUIRE JWT AUTHENTICATION
+
+
+HOW TO USE
+
+
+STEP 1: SETUP
+------------
+1. Install Python 3.8+
+2. Create virtual environment: python3 -m venv venv
+3. Activate it: source venv/bin/activate
+4. Install dependencies: pip install -r requirements.txt
+5. Create MySQL database
+6. Configure .env file with database credentials
+7. Run: python app.py
+
+STEP 2: REGISTER USER
+---------------------
+Send POST request to /signup with username and password
+
+STEP 3: LOGIN
+------------
+Send POST request to /login with username and password
+You'll receive a JWT token
+
+STEP 4: USE API
+---------------
+Include JWT token in Authorization header for all task operations
+Example: Authorization: Bearer <your_token>
+
+
+TESTING
+
+
+The project includes comprehensive unit tests using pytest.
+
+TEST COVERAGE:
+-------------
+- User authentication (signup, login, profile)
+- Task CRUD operations
+- Pagination
+- Filtering
+- User isolation
+- Error handling
+
+RUN TESTS:
+---------
+pytest test_app.py -v
+
+RUN WITH COVERAGE:
+-----------------
+pytest test_app.py --cov=. --cov-report=html
+Tests use in-memory SQLite database (separate from production database)
+
+
+FILE STRUCTURE
+
+
+app.py - Main application file with all routes
+models.py - Database models (User, Task)
+db_config.py - Database configuration
+jwt_utils.py - JWT token generation and validation
+test_app.py - Unit tests
+pytest.ini - Test configuration
+requirements.txt - Python dependencies
+
+service/
+  user_service.py - User authentication logic
+  task_service.py - Task management logic
+
+
+KEY FEATURES
+
+
+1. RESTful API - Follows REST principles
+2. JWT Authentication - Secure, stateless authentication
+3. Password Security - bcrypt hashing
+4. User Isolation - Users can only access their own data
+5. Soft Delete - Data preservation
+6. Pagination - Efficient data retrieval
+7. Filtering - Advanced search capabilities
+8. Error Handling - Consistent error responses
+9. Logging - Comprehensive operation logs
+10. Unit Tests - Comprehensive test coverage
+
