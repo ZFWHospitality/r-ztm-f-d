@@ -1,0 +1,10 @@
+Flask==3.1.2
+Flask-SQLAlchemy==3.1.1
+PyMySQL==1.1.2
+Flask-Migrate==4.1.0
+python-dotenv==1.1.1
+bcrypt==5.0.0
+PyJWT==2.10.1
+flask-cors==3.0.10
+pytest==8.3.4
+pytest-cov==6.0.0
