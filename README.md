@@ -1,62 +1,209 @@
-# r-ztm-f-d
+🚀 Task Manager API – Zippee Assignment Submission
 
-# Title: Task Manager API
+A fully functional Task Manager REST API built using Django REST Framework, with:
 
-## Objective:
-Build a RESTful API for a simple task manager application using either Flask or Django. The API should allow users to perform basic CRUD operations on tasks and should include user authentication.
+CRUD operations for tasks
+JWT-based authentication
+User authorization (owner-only update/delete)
+Pagination, filtering, searching
+API documentation (Swagger + ReDoc)
+Automated tests (14 tests, all passing)
 
-## Requirements:
 
-1. Task Model:
+📦 Tech Stack
 
-* Create a model for tasks with the following fields:
-** id (auto-generated)
-** title (string)
-** description (text)
-** completed (boolean)
-** created_at (timestamp)
-** updated_at (timestamp)
+Python 3.10+
+Django 4.x
+Django REST Framework
+SimpleJWT (JWT Authentication)
+drf-yasg (Swagger & ReDoc API docs)
+django-filter (Filtering)
+pytest + pytest-django (Testing)
 
-2. API Endpoints:
+📁 Code Organization & Structure
 
-* Implement the following endpoints:
-** GET /tasks: Retrieve a list of all tasks.
-** GET /tasks/{id}: Retrieve details of a specific task.
-** POST /tasks: Create a new task.
-** PUT /tasks/{id}: Update details of a specific task.
-** DELETE /tasks/{id}: Delete a specific task.
+project_root/
+│── core/                    # Main project settings & URLs
+│   ├── settings.py          # Installed apps, DRF setup, JWT, Swagger config
+│   ├── urls.py              # Routes for APIs and docs
+│
+│── tasks/                   # Main Task Manager application
+│   ├── models.py            # Task model (title, desc, completed, timestamps, owner)
+│   ├── serializers.py       # Serializers for Task and User
+│   ├── views.py             # CRUD API + custom update/delete messages
+│   ├── permissions.py       # Owner-or-admin rule
+│   ├── tests.py             # Complete automated test suite
+│   ├── admin.py             # Admin panel support
+│
+│── manage.py                # Django management script
+│── requirements.txt         # Python dependencies
+│── README.md                # Project documentation
 
-3. User Authentication:
 
-* Implement user authentication using either JWT or session-based authentication.
-* Users should be able to register and log in.
-* Only authenticated users should be able to create, update, or delete tasks.
 
-4. Documentation:
+✨ Features Implemented
 
-* Provide clear and concise API documentation, including examples of requests and responses.
-* Use any documentation tool of your choice (e.g., Swagger, ReDoc).
+1️⃣ CRUD Operations (Fully Implemented)
 
-5. Testing:
+Method	Endpoint	Description
+GET	/api/tasks/	List user’s tasks (paginated + filtered)
+GET	/api/tasks/{id}/	Retrieve task details
+POST	/api/tasks/	Create a new task
+PUT	/api/tasks/{id}/	Full update (returns success message)
+PATCH	/api/tasks/{id}/	Partial update (returns success message)
+DELETE	/api/tasks/{id}/	Delete task (returns success message)
 
-* Write unit tests to ensure the correctness of your API endpoints.
-* Include instructions on how to run the tests.
 
-## Bonus Points (Optional):
+Custom Response Messages:
 
-* Implement pagination for the list of tasks.
-* Add filtering options for tasks (e.g., filter by completed status).
-* Include user roles (e.g., admin, regular user) with different permissions.
+Update →
 
-## Submission:
+{
+  "message": "Task updated successfully!",
+  "task": { ... }
+}
 
-* Share your codebase via a version control system (e.g., GitHub).
-* Include a README.md file with instructions on how to set up and run the application.
-* Provide any additional notes or explanations you think are necessary.
-## Evaluation Criteria:
 
-* Code organization and structure.
-* Correct implementation of CRUD operations.
-* User authentication and authorization.
-* Quality and coverage of tests.
-* Clarity and completeness of documentation.
+Delete →
+
+{
+  "message": "Task 'Buy groceries' has been deleted successfully."
+}
+
+
+
+🔐 User Authentication & Authorization
+
+✔ JWT Authentication
+Implemented using SimpleJWT:
+POST /api/token/ → login
+POST /api/token/refresh/ → refresh token
+
+✔ Authorization Rules
+Only authenticated users can create tasks
+Users can only view their own tasks
+Users can only update or delete their own tasks
+Admin (is_staff=True) can view/edit/delete all tasks
+
+✔ Permissions Implemented
+IsOwnerOrAdmin ensures:
+if request.method in SAFE_METHODS: allow
+else: allow only owner or admin
+
+
+🔎 Filtering, Searching & Pagination
+✔ Pagination
+Enabled globally:
+Default: 10 items per page
+Use:
+/api/tasks/?page=2
+
+✔ Filtering
+/api/tasks/?completed=True
+
+✔ Search
+/api/tasks/?search=grocery
+
+✔ Ordering
+/api/tasks/?ordering=created_at
+
+
+📚 API Documentation (Swagger + ReDoc)
+Automatically generated using drf-yasg.
+Swagger UI
+👉 http://127.0.0.1:8000/docs/swagger/
+ReDoc
+👉 http://127.0.0.1:8000/docs/redoc/
+
+Both support:
+JWT authorization button
+Example request/response bodies
+Descriptions of all CRUD routes
+Custom update/delete examples
+
+🧪 Automated Testing
+A comprehensive test suite (14 tests) verifies:
+✔ Authentication
+Token generation
+Access control
+Owner vs non-owner access
+✔ CRUD Functionality
+Create
+Retrieve
+Update (PUT/PATCH)
+Delete
+✔ Authorization
+Non-owner update/delete returns 403 or 404
+Admin can access all tasks
+✔ Filtering & Pagination
+completed=True filter
+Pagination envelope exists
+✔ Custom Responses
+Update returns "Task updated successfully!"
+Delete returns "Task '<title>' has been deleted successfully."
+
+
+▶️ How to Run Tests
+
+python manage.py test tasks
+
+Using pytest (if installed):
+pytest -q
+
+Expected output:
+Found 14 tests.
+..............
+OK
+
+
+⚙️ Setup & Installation
+git clone
+cd vaibhav_task_manager
+
+python3 -m venv .venv
+source .venv/bin/activate
+
+pip install -r requirements.txt
+
+python manage.py migrate
+python manage.py runserver
+
+
+
+🧪 Quick Usage Flow
+1️⃣ Register User
+POST /api/users/
+
+{
+  "username": "vaibhav",
+  "password": "test123"
+}
+
+2️⃣ Login & Get Tokens
+POST /api/token/
+{
+  "username": "vaibhav",
+  "password": "test123"
+}
+
+Copy "access" token and use:
+Authorization: Bearer <access>
+
+
+3️⃣ Create Task
+POST /api/tasks/
+{
+  "title": "Buy Milk",
+  "description": "2 packets",
+  "completed": false
+}
+
+
+🏁 Final Notes
+This submission satisfies:
+
+✔ Code organization and structure
+✔ Complete CRUD implementation
+✔ Authentication + Authorization
+✔ Comprehensive test coverage
+✔ Clear and complete documentation
