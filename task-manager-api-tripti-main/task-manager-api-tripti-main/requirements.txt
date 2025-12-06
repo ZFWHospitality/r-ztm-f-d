@@ -1,0 +1,9 @@
+Flask>=2.2
+Flask-SQLAlchemy>=3.0
+Flask-Migrate>=4.0
+Flask-JWT-Extended>=4.4
+marshmallow>=3.19
+flasgger>=0.9.5
+python-dotenv>=1.0
+pytest>=7.0
+pytest-flask>=1.2
